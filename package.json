@@ -1,7 +1,7 @@
 {
   "name": "request-header-parser-microservice",
   "version": "1.0.0",
-  "description": "A request header parser microservice",
+  "description": "A request header parser microservice that returns IP address, language, and software info",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
