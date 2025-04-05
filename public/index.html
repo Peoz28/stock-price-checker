@@ -1,61 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timestamp Microservice</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiểm Tra Giá Cổ Phiếu</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Timestamp Microservice</h1>
-        <div class="usage">
-            <h2>Usage:</h2>
-            <ul>
-                <li><code>/api/</code> - Returns current timestamp</li>
-                <li><code>/api/2023-12-25</code> - Returns timestamp for specific date</li>
-                <li><code>/api/1703548800000</code> - Returns timestamp for Unix timestamp</li>
-            </ul>
-        </div>
-        <div class="example">
-            <h2>Example Response:</h2>
-            <pre>
-{
-    "unix": 1703548800000,
-    "utc": "Mon, 25 Dec 2023 00:00:00 GMT"
-}
-            </pre>
-        </div>
-        <div class="try-it">
-            <h2>Try it:</h2>
-            <input type="text" id="dateInput" placeholder="Enter a date or timestamp">
-            <button onclick="getTimestamp()">Get Timestamp</button>
-            <pre id="result"></pre>
-        </div>
+  <div class="container">
+    <h1>Kiểm Tra Giá Cổ Phiếu</h1>
+    
+    <div class="stock-form">
+      <div class="form-group">
+        <label for="stock1">Mã Cổ Phiếu 1:</label>
+        <input type="text" id="stock1" placeholder="VD: AAPL" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="stock2">Mã Cổ Phiếu 2 (tùy chọn):</label>
+        <input type="text" id="stock2" placeholder="VD: MSFT">
+      </div>
+      
+      <div class="form-group checkbox">
+        <input type="checkbox" id="like">
+        <label for="like">Thích cổ phiếu này</label>
+      </div>
+      
+      <button id="get-stock">Lấy Thông Tin</button>
     </div>
-    <script>
-        function getTimestamp() {
-            const input = document.getElementById('dateInput').value;
-            const resultElement = document.getElementById('result');
-            let dateObj;
-
-            if (!input) {
-                dateObj = new Date();
-            } else if (/^\d+$/.test(input)) {
-                dateObj = new Date(parseInt(input));
-            } else {
-                dateObj = new Date(input);
-            }
-
-            if (dateObj.toString() === 'Invalid Date') {
-                resultElement.textContent = JSON.stringify({ error: "Invalid Date" }, null, 2);
-            } else {
-                resultElement.textContent = JSON.stringify({
-                    unix: dateObj.getTime(),
-                    utc: dateObj.toUTCString()
-                }, null, 2);
-            }
-        }
-    </script>
+    
+    <div id="result" class="result-container">
+      <div id="stock-result"></div>
+    </div>
+  </div>
+  
+  <script src="script.js"></script>
 </body>
 </html> 

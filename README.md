@@ -1,81 +1,80 @@
-# Timestamp Microservice
+# Ứng Dụng Kiểm Tra Giá Cổ Phiếu
 
-A simple API that converts between Unix timestamps and human-readable dates.
+Ứng dụng web cho phép người dùng kiểm tra giá cổ phiếu và thích các mã cổ phiếu. Ứng dụng sử dụng API proxy để lấy dữ liệu cổ phiếu thời gian thực.
 
-## Links
+## Tính Năng
 
-- **Solution Link:** https://peoz28.github.io/timestamp-microservice-demo
-- **Source Code:** https://github.com/Peoz28/timestamp-microservice
+- Kiểm tra giá cổ phiếu theo mã NASDAQ
+- So sánh hai mã cổ phiếu
+- Thích các mã cổ phiếu (chỉ cho phép 1 lượt thích từ mỗi IP)
+- Hiển thị số lượt thích tương đối khi so sánh hai mã cổ phiếu
 
-## Features
+## Cài Đặt
 
-- Convert dates to Unix timestamps
-- Convert Unix timestamps to dates
-- Handle both date strings and Unix timestamps
-- Return current timestamp if no date is provided
+1. Clone repository:
+```
+git clone <repository-url>
+cd stock-price-checker
+```
+
+2. Cài đặt dependencies:
+```
+npm install
+```
+
+3. Tạo file .env với các biến môi trường sau:
+```
+NODE_ENV=test
+MONGO_URI=mongodb://localhost:27017/stock-price-checker
+PORT=3000
+```
+
+4. Khởi động MongoDB (nếu chưa có):
+```
+mongod
+```
+
+5. Chạy ứng dụng:
+```
+npm start
+```
+
+6. Truy cập ứng dụng tại: http://localhost:3000
+
+## Chạy Tests
+
+```
+npm test
+```
+
+## Cấu Trúc Dự Án
+
+- `server.js`: File chính của server
+- `routes/api.js`: Xử lý các API endpoints
+- `models/stock.js`: Mô hình dữ liệu cho cổ phiếu
+- `public/`: Thư mục chứa các file frontend
+  - `index.html`: Giao diện người dùng
+  - `styles.css`: CSS cho giao diện
+  - `script.js`: JavaScript cho giao diện
+- `tests/`: Thư mục chứa các file test
+  - `2_functional-tests.js`: Tests chức năng
 
 ## API Endpoints
 
-- `GET /api/` - Returns current timestamp
-- `GET /api/:date` - Returns timestamp for specific date
+### GET /api/stock-prices
 
-## Example Usage
+Lấy thông tin cổ phiếu.
 
-- `GET /api/` - Get current timestamp
-- `GET /api/2023-12-25` - Get timestamp for December 25, 2023
-- `GET /api/1703548800000` - Get date for Unix timestamp
+**Tham số:**
+- `stock`: Mã cổ phiếu (bắt buộc)
+- `like`: true/false (tùy chọn)
 
-## Example Response
+**Ví dụ:**
+- Lấy thông tin một mã cổ phiếu: `/api/stock-prices?stock=AAPL`
+- Lấy thông tin và thích một mã cổ phiếu: `/api/stock-prices?stock=AAPL&like=true`
+- So sánh hai mã cổ phiếu: `/api/stock-prices?stock=AAPL&stock=MSFT`
+- So sánh và thích hai mã cổ phiếu: `/api/stock-prices?stock=AAPL&stock=MSFT&like=true`
 
-```json
-{
-    "unix": 1703548800000,
-    "utc": "Mon, 25 Dec 2023 00:00:00 GMT"
-}
-```
+## Giấy Phép
 
-## Installation
-
-1. Clone the repository
-2. Run `npm install`
-3. Run `npm start`
-4. Access the API at `http://localhost:3000`
-
-## Live Demo
-
-Visit the live demo at: https://peoz28.github.io/timestamp-microservice-demo 
-
-# Mean-Variance-Standard Deviation Calculator
-
-A Python program that calculates mean, variance, standard deviation, max, min, and sum of a 3x3 matrix.
-
-## Installation
-
-1. Clone the repository
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-## Usage
-
-Run the program:
-```bash
-python main.py
-```
-
-## Example
-
-Input: `[0,1,2,3,4,5,6,7,8]`
-
-Output:
-```python
-{
-  'mean': [[3.0, 4.0, 5.0], [1.0, 4.0, 7.0], 4.0],
-  'variance': [[6.0, 6.0, 6.0], [0.6666666666666666, 0.6666666666666666, 0.6666666666666666], 6.666666666666667],
-  'standard deviation': [[2.449489742783178, 2.449489742783178, 2.449489742783178], [0.816496580927726, 0.816496580927726, 0.816496580927726], 2.581988897471611],
-  'max': [[6, 7, 8], [2, 5, 8], 8],
-  'min': [[0, 1, 2], [0, 3, 6], 0],
-  'sum': [[9, 12, 15], [3, 12, 21], 36]
-}
-``` 
+MIT 
