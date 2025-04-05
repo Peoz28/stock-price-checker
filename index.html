@@ -3,16 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Markdown Previewer</title>
+    <title>Timestamp Microservice</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-    <div id="root"></div>
-    <script type="text/babel" src="app.js"></script>
-    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+    <div class="container">
+        <h1>Timestamp Microservice</h1>
+        <div class="usage">
+            <h2>Usage:</h2>
+            <ul>
+                <li><code>/api/</code> - Returns current timestamp</li>
+                <li><code>/api/2023-12-25</code> - Returns timestamp for specific date</li>
+                <li><code>/api/1703548800000</code> - Returns timestamp for Unix timestamp</li>
+            </ul>
+        </div>
+        <div class="example">
+            <h2>Example Response:</h2>
+            <pre>
+{
+    "unix": 1703548800000,
+    "utc": "Mon, 25 Dec 2023 00:00:00 GMT"
+}
+            </pre>
+        </div>
+    </div>
 </body>
 </html> 
