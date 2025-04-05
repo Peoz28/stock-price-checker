@@ -23,9 +23,13 @@ app.get('/', (req, res) => {
 // API endpoint
 app.get('/api/whoami', (req, res) => {
     // Get IP address (handling proxy)
-    const ipaddress = req.headers['x-forwarded-for']?.split(',')[0] || 
-                     req.connection.remoteAddress || 
-                     req.socket.remoteAddress;
+    let ipaddress = req.headers['x-forwarded-for'];
+    if (ipaddress) {
+        // Get the first IP if there are multiple
+        ipaddress = ipaddress.split(',')[0];
+    } else {
+        ipaddress = req.connection.remoteAddress;
+    }
     
     // Get preferred language
     const language = req.headers['accept-language']?.split(',')[0] || 'en-US';
@@ -33,10 +37,11 @@ app.get('/api/whoami', (req, res) => {
     // Get software (user agent)
     const software = req.headers['user-agent'] || 'Unknown';
 
+    // Return in the exact format required by FCC
     res.json({
-        ipaddress,
-        language,
-        software
+        ipaddress: ipaddress,
+        language: language,
+        software: software
     });
 });
 
