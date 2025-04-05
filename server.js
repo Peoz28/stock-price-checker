@@ -5,16 +5,19 @@ const port = process.env.PORT || 3000;
 // Enable CORS for FCC testing
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
     next();
 });
 
 // Serve static files
 app.use(express.static('public'));
 
+// Root endpoint
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
+// API endpoint
 app.get('/api/:date?', (req, res) => {
     let date = req.params.date;
     let dateObj;
@@ -44,6 +47,7 @@ app.get('/api/:date?', (req, res) => {
     });
 });
 
+// Start server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 }); 
