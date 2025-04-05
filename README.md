@@ -44,3 +44,38 @@ A simple API that converts between Unix timestamps and human-readable dates.
 ## Live Demo
 
 Visit the live demo at: https://peoz28.github.io/timestamp-microservice-demo 
+
+# Mean-Variance-Standard Deviation Calculator
+
+A Python program that calculates mean, variance, standard deviation, max, min, and sum of a 3x3 matrix.
+
+## Installation
+
+1. Clone the repository
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+
+Run the program:
+```bash
+python main.py
+```
+
+## Example
+
+Input: `[0,1,2,3,4,5,6,7,8]`
+
+Output:
+```python
+{
+  'mean': [[3.0, 4.0, 5.0], [1.0, 4.0, 7.0], 4.0],
+  'variance': [[6.0, 6.0, 6.0], [0.6666666666666666, 0.6666666666666666, 0.6666666666666666], 6.666666666666667],
+  'standard deviation': [[2.449489742783178, 2.449489742783178, 2.449489742783178], [0.816496580927726, 0.816496580927726, 0.816496580927726], 2.581988897471611],
+  'max': [[6, 7, 8], [2, 5, 8], 8],
+  'min': [[0, 1, 2], [0, 3, 6], 0],
+  'sum': [[9, 12, 15], [3, 12, 21], 36]
+}
+``` 
