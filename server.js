@@ -18,32 +18,20 @@ app.get('/', (req, res) => {
 });
 
 // API endpoint
-app.get('/api/:date?', (req, res) => {
-    let date = req.params.date;
-    let dateObj;
+app.get('/api/whoami', (req, res) => {
+    // Get IP address
+    const ipaddress = req.ip || req.connection.remoteAddress;
+    
+    // Get preferred language
+    const language = req.headers['accept-language']?.split(',')[0] || 'en-US';
+    
+    // Get software (user agent)
+    const software = req.headers['user-agent'] || 'Unknown';
 
-    if (!date) {
-        // Handle empty date parameter - return current time
-        dateObj = new Date();
-    } else {
-        // Check if the input is a Unix timestamp (all digits)
-        if (/^\d+$/.test(date)) {
-            dateObj = new Date(parseInt(date));
-        } else {
-            // Try parsing as a date string
-            dateObj = new Date(date);
-        }
-    }
-
-    // Check for invalid date
-    if (dateObj.toString() === 'Invalid Date') {
-        return res.json({ error: "Invalid Date" });
-    }
-
-    // Return both unix timestamp (in milliseconds) and UTC string
     res.json({
-        unix: dateObj.getTime(),
-        utc: dateObj.toUTCString()
+        ipaddress,
+        language,
+        software
     });
 });
 

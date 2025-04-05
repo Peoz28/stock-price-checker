@@ -3,26 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timestamp Microservice</title>
+    <title>Request Header Parser Microservice</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Timestamp Microservice</h1>
+        <h1>Request Header Parser Microservice</h1>
         <div class="usage">
             <h2>Cách sử dụng:</h2>
-            <ul>
-                <li><code>/api/</code> - Trả về thời gian hiện tại</li>
-                <li><code>/api/2023-12-25</code> - Trả về timestamp cho ngày cụ thể</li>
-                <li><code>/api/1703548800000</code> - Trả về ngày tháng cho timestamp Unix</li>
-            </ul>
+            <p>Gửi GET request đến <code>/api/whoami</code></p>
         </div>
         <div class="example">
             <h2>Ví dụ kết quả:</h2>
             <pre>
 {
-    "unix": 1703548800000,
-    "utc": "Mon, 25 Dec 2023 00:00:00 GMT"
+    "ipaddress": "::1",
+    "language": "en-US",
+    "software": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) ..."
 }
             </pre>
         </div>
