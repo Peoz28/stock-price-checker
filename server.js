@@ -22,20 +22,14 @@ app.get('/', (req, res) => {
 
 // API endpoint
 app.get('/api/whoami', (req, res) => {
-    // Get IP address (handling proxy)
-    let ipaddress = req.headers['x-forwarded-for'];
-    if (ipaddress) {
-        // Get the first IP if there are multiple
-        ipaddress = ipaddress.split(',')[0];
-    } else {
-        ipaddress = req.connection.remoteAddress;
-    }
+    // Get IP address
+    const ipaddress = req.ip;
     
     // Get preferred language
-    const language = req.headers['accept-language']?.split(',')[0] || 'en-US';
+    const language = req.headers['accept-language'];
     
     // Get software (user agent)
-    const software = req.headers['user-agent'] || 'Unknown';
+    const software = req.headers['user-agent'];
 
     // Return in the exact format required by FCC
     res.json({
