@@ -2,6 +2,15 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Enable CORS for FCC testing
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    next();
+});
+
+// Serve static files
+app.use(express.static('public'));
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
@@ -11,20 +20,24 @@ app.get('/api/:date?', (req, res) => {
     let dateObj;
 
     if (!date) {
+        // Handle empty date parameter - return current time
         dateObj = new Date();
     } else {
-        if (isNaN(date)) {
-            dateObj = new Date(date);
-        } else {
+        // Check if the input is a Unix timestamp (all digits)
+        if (/^\d+$/.test(date)) {
             dateObj = new Date(parseInt(date));
+        } else {
+            // Try parsing as a date string
+            dateObj = new Date(date);
         }
     }
 
+    // Check for invalid date
     if (dateObj.toString() === 'Invalid Date') {
-        res.json({ error: 'Invalid Date' });
-        return;
+        return res.json({ error: "Invalid Date" });
     }
 
+    // Return both unix timestamp (in milliseconds) and UTC string
     res.json({
         unix: dateObj.getTime(),
         utc: dateObj.toUTCString()
