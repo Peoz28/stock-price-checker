@@ -9,6 +9,9 @@ app.use((req, res, next) => {
     next();
 });
 
+// Trust proxy for IP address
+app.set('trust proxy', true);
+
 // Serve static files
 app.use(express.static('public'));
 
@@ -19,8 +22,10 @@ app.get('/', (req, res) => {
 
 // API endpoint
 app.get('/api/whoami', (req, res) => {
-    // Get IP address
-    const ipaddress = req.ip || req.connection.remoteAddress;
+    // Get IP address (handling proxy)
+    const ipaddress = req.headers['x-forwarded-for']?.split(',')[0] || 
+                     req.connection.remoteAddress || 
+                     req.socket.remoteAddress;
     
     // Get preferred language
     const language = req.headers['accept-language']?.split(',')[0] || 'en-US';

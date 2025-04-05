@@ -12,12 +12,18 @@
         <div class="usage">
             <h2>Cách sử dụng:</h2>
             <p>Gửi GET request đến <code>/api/whoami</code></p>
+            <p>API sẽ trả về thông tin về request của bạn bao gồm:</p>
+            <ul>
+                <li>IP address của bạn</li>
+                <li>Ngôn ngữ ưa thích của trình duyệt</li>
+                <li>Thông tin về trình duyệt/software</li>
+            </ul>
         </div>
         <div class="example">
             <h2>Ví dụ kết quả:</h2>
             <pre>
 {
-    "ipaddress": "::1",
+    "ipaddress": "123.45.67.89",
     "language": "en-US",
     "software": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) ..."
 }
