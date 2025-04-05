@@ -2,6 +2,11 @@
 
 A simple API that converts between Unix timestamps and human-readable dates.
 
+## Links
+
+- **Solution Link:** https://peoz28.github.io/timestamp-microservice-demo/
+- **Source Code:** https://github.com/Peoz28/timestamp-microservice
+
 ## Features
 
 - Convert dates to Unix timestamps
