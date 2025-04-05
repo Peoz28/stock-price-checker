@@ -1,6 +1,6 @@
 # Timestamp Microservice
 
-A simple timestamp microservice API built with Node.js and Express.
+A simple API that converts between Unix timestamps and human-readable dates.
 
 ## Features
 
@@ -11,28 +11,14 @@ A simple timestamp microservice API built with Node.js and Express.
 
 ## API Endpoints
 
-### GET /api/
-Returns the current timestamp
-
-### GET /api/:date
-Returns the timestamp for the provided date
-
-The date parameter can be:
-- A date string (e.g., "2023-12-25")
-- A Unix timestamp (e.g., "1703548800000")
+- `GET /api/` - Returns current timestamp
+- `GET /api/:date` - Returns timestamp for specific date
 
 ## Example Usage
 
-```bash
-# Get current timestamp
-GET /api/
-
-# Get timestamp for specific date
-GET /api/2023-12-25
-
-# Get timestamp for Unix timestamp
-GET /api/1703548800000
-```
+- `GET /api/` - Get current timestamp
+- `GET /api/2023-12-25` - Get timestamp for December 25, 2023
+- `GET /api/1703548800000` - Get date for Unix timestamp
 
 ## Example Response
 
@@ -46,15 +32,10 @@ GET /api/1703548800000
 ## Installation
 
 1. Clone the repository
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start the server:
-   ```bash
-   npm start
-   ```
+2. Run `npm install`
+3. Run `npm start`
+4. Access the API at `http://localhost:3000`
 
 ## Live Demo
 
-[View Live Demo](https://timestamp-microservice.freecodecamp.rocks) 
+Visit the live demo at: https://peoz28.github.io 
