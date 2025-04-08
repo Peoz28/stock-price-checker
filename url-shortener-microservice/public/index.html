@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Shortener Microservice</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      background-color: #f9f9f9;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      display: none;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>URL Shortener Microservice</h1>
+  
+  <div class="container">
+    <div class="form-group">
+      <label for="url-input">Enter URL to shorten:</label>
+      <input type="text" id="url-input" placeholder="https://example.com">
+    </div>
+    <button id="shorten-btn">Shorten URL</button>
+    
+    <div id="error" class="error"></div>
+    
+    <div id="result">
+      <h3>Shortened URL:</h3>
+      <p>Original URL: <span id="original-url"></span></p>
+      <p>Short URL: <a id="short-url" href="#" target="_blank"></a></p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('shorten-btn').addEventListener('click', async () => {
+      const urlInput = document.getElementById('url-input');
+      const url = urlInput.value.trim();
+      const resultDiv = document.getElementById('result');
+      const errorDiv = document.getElementById('error');
+      
+      // Reset displays
+      resultDiv.style.display = 'none';
+      errorDiv.style.display = 'none';
+      
+      if (!url) {
+        errorDiv.textContent = 'Please enter a URL';
+        errorDiv.style.display = 'block';
+        return;
+      }
+      
+      try {
+        const response = await fetch('/api/shorturl', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `url=${encodeURIComponent(url)}`
+        });
+        
+        const data = await response.json();
+        
+        if (data.error) {
+          errorDiv.textContent = data.error;
+          errorDiv.style.display = 'block';
+          return;
+        }
+        
+        // Display result
+        document.getElementById('original-url').textContent = data.original_url;
+        const shortUrlLink = document.getElementById('short-url');
+        shortUrlLink.textContent = `${window.location.origin}/api/shorturl/${data.short_url}`;
+        shortUrlLink.href = shortUrlLink.textContent;
+        
+        resultDiv.style.display = 'block';
+      } catch (error) {
+        errorDiv.textContent = 'An error occurred. Please try again.';
+        errorDiv.style.display = 'block';
+        console.error('Error:', error);
+      }
+    });
+  </script>
+</body>
+</html> 
