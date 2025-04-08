@@ -1,80 +1,49 @@
-# Ứng Dụng Kiểm Tra Giá Cổ Phiếu
+# URL Shortener Microservice
 
-Ứng dụng web cho phép người dùng kiểm tra giá cổ phiếu và thích các mã cổ phiếu. Ứng dụng sử dụng API proxy để lấy dữ liệu cổ phiếu thời gian thực.
+A simple URL shortener microservice built with Node.js and Express.
 
-## Tính Năng
+## Features
 
-- Kiểm tra giá cổ phiếu theo mã NASDAQ
-- So sánh hai mã cổ phiếu
-- Thích các mã cổ phiếu (chỉ cho phép 1 lượt thích từ mỗi IP)
-- Hiển thị số lượt thích tương đối khi so sánh hai mã cổ phiếu
+- Shorten long URLs to easily shareable short URLs
+- Validate input URLs
+- Redirect from short URLs to original URLs
+- Clean and responsive user interface
 
-## Cài Đặt
+## Installation
 
-1. Clone repository:
+1. Clone the repository:
+```bash
+git clone https://github.com/Peoz28/url-shortener-microservice.git
 ```
-git clone <repository-url>
-cd stock-price-checker
-```
 
-2. Cài đặt dependencies:
-```
+2. Install dependencies:
+```bash
+cd url-shortener-microservice
 npm install
 ```
 
-3. Tạo file .env với các biến môi trường sau:
-```
-NODE_ENV=test
-MONGO_URI=mongodb://localhost:27017/stock-price-checker
-PORT=3000
-```
-
-4. Khởi động MongoDB (nếu chưa có):
-```
-mongod
-```
-
-5. Chạy ứng dụng:
-```
+3. Start the server:
+```bash
 npm start
 ```
 
-6. Truy cập ứng dụng tại: http://localhost:3000
-
-## Chạy Tests
-
-```
-npm test
-```
-
-## Cấu Trúc Dự Án
-
-- `server.js`: File chính của server
-- `routes/api.js`: Xử lý các API endpoints
-- `models/stock.js`: Mô hình dữ liệu cho cổ phiếu
-- `public/`: Thư mục chứa các file frontend
-  - `index.html`: Giao diện người dùng
-  - `styles.css`: CSS cho giao diện
-  - `script.js`: JavaScript cho giao diện
-- `tests/`: Thư mục chứa các file test
-  - `2_functional-tests.js`: Tests chức năng
+The application will be available at `http://localhost:3000`
 
 ## API Endpoints
 
-### GET /api/stock-prices
+- `POST /api/shorturl` - Create a short URL
+  - Body: `{ "url": "https://example.com" }`
+  - Response: `{ "original_url": "https://example.com", "short_url": 1 }`
 
-Lấy thông tin cổ phiếu.
+- `GET /api/shorturl/:short_url` - Redirect to original URL
 
-**Tham số:**
-- `stock`: Mã cổ phiếu (bắt buộc)
-- `like`: true/false (tùy chọn)
+## Technologies Used
 
-**Ví dụ:**
-- Lấy thông tin một mã cổ phiếu: `/api/stock-prices?stock=AAPL`
-- Lấy thông tin và thích một mã cổ phiếu: `/api/stock-prices?stock=AAPL&like=true`
-- So sánh hai mã cổ phiếu: `/api/stock-prices?stock=AAPL&stock=MSFT`
-- So sánh và thích hai mã cổ phiếu: `/api/stock-prices?stock=AAPL&stock=MSFT&like=true`
+- Node.js
+- Express.js
+- HTML/CSS
+- JavaScript
 
-## Giấy Phép
+## License
 
 MIT 

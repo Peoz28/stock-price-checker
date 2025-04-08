@@ -1,61 +1,72 @@
-require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
-const helmet = require('helmet');
-const path = require('path');
-const apiRoutes = require('./routes/api.js');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const dns = require('dns');
+const { promisify } = require('util');
+const dnsLookup = promisify(dns.lookup);
 
 const app = express();
+const port = process.env.PORT || 3000;
 
-// Thiết lập Content Security Policy
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"],
-      styleSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'", "https://stock-price-checker-proxy.freecodecamp.rocks"]
-    }
-  }
-}));
-
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Basic Configuration
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('public'));
 
-// Kết nối MongoDB
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/stock-price-checker', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('Đã kết nối với MongoDB'))
-.catch(err => console.error('Lỗi kết nối MongoDB:', err));
+// In-memory storage for URLs
+const urlDatabase = new Map();
+let counter = 1;
 
-// Routes
-app.use('/api', apiRoutes);
+// Helper function to validate URL format
+function isValidUrl(urlString) {
+  try {
+    const url = new URL(urlString);
+    return url.protocol === 'http:' || url.protocol === 'https:';
+  } catch (error) {
+    return false;
+  }
+}
 
-// Route mặc định
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(__dirname + '/public/index.html');
 });
 
-// Xử lý lỗi 404
-app.use((req, res) => {
-  res.status(404).send('Không tìm thấy trang');
+// URL shortening endpoint
+app.post('/api/shorturl', async (req, res) => {
+  const originalUrl = req.body.url;
+  
+  if (!isValidUrl(originalUrl)) {
+    return res.json({ error: 'invalid url' });
+  }
+
+  try {
+    const urlObj = new URL(originalUrl);
+    await dnsLookup(urlObj.hostname);
+    
+    const shortUrl = counter++;
+    urlDatabase.set(shortUrl.toString(), originalUrl);
+    
+    res.json({
+      original_url: originalUrl,
+      short_url: shortUrl
+    });
+  } catch (error) {
+    res.json({ error: 'invalid url' });
+  }
 });
 
-// Xử lý lỗi
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Đã xảy ra lỗi!');
+// URL redirect endpoint
+app.get('/api/shorturl/:short_url', (req, res) => {
+  const shortUrl = req.params.short_url;
+  const originalUrl = urlDatabase.get(shortUrl);
+  
+  if (originalUrl) {
+    res.redirect(originalUrl);
+  } else {
+    res.json({ error: 'No short URL found for the given input' });
+  }
 });
 
-// Khởi động server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server đang chạy tại http://localhost:${PORT}`);
-});
-
-module.exports = app; // Xuất app để sử dụng trong tests 
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+}); 
